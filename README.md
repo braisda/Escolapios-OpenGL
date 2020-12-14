@@ -1,2 +1,2 @@
-# SGI---Proyecto-final
+# SGI-Proyecto-final
 Proyecto final
