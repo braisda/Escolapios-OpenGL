@@ -90,5 +90,3 @@ void igSolidCone (int pu, int pv);
 
 /* Dibuja un cuadrado de arista unidad y centrado en el origen */
 void igSolidCube (void);
-
-void dibujaPersona();

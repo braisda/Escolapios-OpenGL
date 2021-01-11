@@ -11,7 +11,10 @@
 #include "glut.h"
 
 /* Identificadores de las display lists */
-GLuint arco, arcos, adoquinado_simple, seccion_adoquinado, pasillo_simple, pasillo_central, pasillo_pequenho, seccion_suelo, suelo, pared_simple, persona, escena;
+GLuint arco, arcos, adoquinado_simple, seccion_adoquinado, pasillo_simple,
+pasillo_central, pasillo_vertical, pasillo_horizontal, escalon, escalera,
+seccion_suelo, suelo, puerta, ventana, ventana_balcon, tejas, tejado_simple,
+pared_puerta, pared_simple, persona, escena;
 
 
 /* Funciones de modelado */
@@ -37,12 +40,30 @@ void CreaPasilloSimple(void);
 
 void CreaPasilloCentral(void);
 
-void CreaPasilloPequenho(void);
+void CreaPasilloVertical(void);
+
+void CreaPasilloHorizontal(void);
+
+void CreaEscalon(void);
+
+void CreaEscalera(void);
 
 void CreaSeccionSuelo(void);
 
 /* Crea una display list para el suelo */
 void CreaSuelo(void);
+
+void CreaPuerta(void);
+
+void CreaVentana(void);
+
+void CreaVentanaBalcon(void);
+
+void CreaTejas(void);
+
+void CreaTejadoSimple(void);
+
+void CreaParedPuerta(void);
 
 void CreaParedSimple(void);
 
