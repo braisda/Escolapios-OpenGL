@@ -30,12 +30,22 @@ void IniciaDisplayLists (void)
 	CreaSeccionSuelo();
 	CreaSuelo();
 	CreaPuerta();
+	CreaPuertaArco();
 	CreaVentana();
 	CreaVentanaBalcon();
+	CreaVentanaBalconRecta();
+	CreaVentanaAlargada();
+	CreaVentanaRedonda();
+	CreaPivote();
 	CreaTejas();
 	CreaTejadoSimple();
+	CreaTejadoCono();
 	CreaParedPuerta();
+	CreaParedVentana();
 	CreaParedSimple();
+	CreaFachada();
+	CreaTorre();
+	CreaFondo();
 	CreaPersona();
 	CreaEscena ();
 }
@@ -459,13 +469,14 @@ void CreaPuerta(void)
 		glNewList(puerta, GL_COMPILE);
 		for (i = 0; i < 12; i++)
 		{
-			// arco superior
+			// marco
 			glPushMatrix();
-				glColor3f(0.847, 0.772, 0.772);
-				glTranslatef(0.005, 0.6, -0.10);
-				glScalef(0.763, 0.6, 0.1);  //tamaño: lados,altura,profundidad
-				igSolidSemiSphere(20, 150);
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, -0.9, 0.0);
+				glScalef(1.4, 3.2, 0.1);
+				igSolidCube();
 			glPopMatrix();
+			// puerta
 			glPushMatrix();
 				glColor3f(0.356, 0.133, 0.043);
 				glTranslatef(0.0, -0.9, 0.0);
@@ -476,6 +487,45 @@ void CreaPuerta(void)
 		glEndList();
 	}
 	else puts("Se ha producido un error creando la display list para la puerta.");
+
+}
+
+void CreaPuertaArco(void)
+{
+	int i;
+
+	puerta_arco = glGenLists(1);
+
+	if (puerta_arco != 0)
+	{
+		glNewList(puerta_arco, GL_COMPILE);
+		for (i = 0; i < 12; i++)
+		{
+			// arco superior
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.005, 1.1, -0.10);
+				glScalef(1.5, 1.1, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidSemiSphere(20, 150);
+			glPopMatrix();
+			// marco
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, -0.9, 0.0);
+				glScalef(1.4, 3.2, 0.1);
+				igSolidCube();
+			glPopMatrix();
+			// puerta
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(0.0, -0.9, 0.0);
+				glScalef(1.2, 3.0, 0.1);
+				igSolidCube();
+			glPopMatrix();
+		}
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para la puerta con arco.");
 
 }
 
@@ -615,6 +665,170 @@ void CreaVentanaBalcon(void)
 	else puts("Se ha producido un error creando la display list para la ventana balcon.");
 }
 
+void CreaVentanaBalconRecta(void)
+{
+	int i;
+	float lado = -0.69;
+
+	ventana_balcon_recta = glGenLists(1);
+
+	if (ventana_balcon_recta != 0)
+	{
+		glNewList(ventana_balcon_recta, GL_COMPILE);
+			// marco
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, 0.0, 0.0);
+				glScalef(1.7, 1.4, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			// parte central
+			glPushMatrix();
+				glColor3f(0.847, 0.772, 0.772);
+				glTranslatef(0.0, 0.0, 0.0);
+				glScalef(1.5, 1.2, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			// balconcillo
+			for (i = 0; i < 10; i++) {
+				glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(lado, -0.42, 0.1); //posición: lados,altura,profundidad
+				glScalef(0.102, 0.4, 0.1); //tamaño: lados,altura,profundidad
+				igSolidCube();
+				glPopMatrix();
+				lado = lado + 0.151;
+			}
+			// apoyo balconcillo
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, -0.2, 0.1); //posición: lados,altura,profundidad
+				glScalef(1.5, 0.1, 0.1); //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			// marco ventana
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(0.0, 0.22, 0.0);
+				glScalef(0.07, 0.75, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(0.35, 0.22, 0.0);
+				glScalef(0.07, 0.75, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(-0.35, 0.22, 0.0);
+				glScalef(0.07, 0.75, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(0.0, 0.0, 0.1); //posición: lados,altura,profundidad
+				glScalef(1.5, 0.05, 0.1); //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(0.0, 0.4, 0.1); //posición: lados,altura,profundidad
+				glScalef(1.5, 0.05, 0.1); //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			glColor3f(0.5, 0.5, 0.5);
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para la ventana balcon.");
+}
+
+void CreaVentanaAlargada(void)
+{
+	int i;
+
+	ventana_alargada = glGenLists(1);
+
+	if (ventana_alargada != 0)
+	{
+		glNewList(ventana_alargada, GL_COMPILE);
+			// marco
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, 0.0, 0.0);
+				glScalef(1.4, 0.7, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			// ventana
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(0.0, 0.0, 0.0);
+				glScalef(1.2, 0.5, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para la ventana alargada.");
+}
+
+void CreaVentanaRedonda(void)
+{
+	int i;
+
+	ventana_redonda = glGenLists(1);
+
+	if (ventana_redonda != 0)
+	{
+		glNewList(ventana_redonda, GL_COMPILE);
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, 0.0, 0.0);
+				glScalef(1.2, 1.4, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidSphere(50, 50);
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(0.0, 0.0, 0.0);
+				glScalef(1, 1.2, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidSphere(50, 50);
+			glPopMatrix();
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para la ventana redonda.");
+}
+
+void CreaPivote(void)
+{
+	int i;
+
+	pivote = glGenLists(1);
+
+	if (pivote != 0)
+	{
+		glNewList(pivote, GL_COMPILE);
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, 0.50, 0.0);
+				glScalef(0.2, 0.2, 0.2);  //tamaño: lados,altura,profundidad
+				igSolidSphere(50, 50);
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, 0.2, 0.0);
+				glScalef(0.1, 0.6, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.854, 0.705, 0.345);
+				glTranslatef(0.0, 0.0, 0.0);
+				glScalef(0.3, 0.5, 0.3);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			glPopMatrix();
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para la ventana redonda.");
+}
+
 void CreaTejas(void)
 {
 	tejas = glGenLists(1);
@@ -679,14 +893,51 @@ void CreaTejadoSimple(void)
 			altura = altura + 0.1;
 			profundidad = profundidad - 0.15;
 		}
-		/*glPushMatrix();
-			glTranslatef(0.0, 1.55, -0.1);
-			glRotatef(30.0, 1.0, 0.0, 0.0);
-			glScalef(1.0, 1.2, 1.2); //tamaño: lados,altura,profundidad
-			glCallList(tejas);
-		glPopMatrix();*/
 		glEndList();
 	}
+}
+
+void CreaTejadoCono(void)
+{
+	int i;
+
+	tejado_cono = glGenLists(1);
+
+	if (tejado_cono != 0)
+	{
+		glNewList(tejado_cono, GL_COMPILE);
+			glPushMatrix();
+				glColor3f(0.701, 0.125, 0.019);
+				glRotatef(-45.0, 1.0, 0.0, 0.0);
+				glScalef(1.8, 2.0, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCone(55, 55);
+			glPopMatrix();
+
+			glPushMatrix();
+				glColor3f(0.701, 0.125, 0.019);
+				glTranslatef(0.0, 0.0, -2.8);
+				glRotatef(45.0, 1.0, 0.0, 0.0);
+				glScalef(1.8, 2.0, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCone(55, 55);
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.701, 0.125, 0.019);
+				glTranslatef(-1.5, -0.05, -1.45);
+				glRotatef(-45.0, 0.0, 0.0, 1.0);
+				glScalef(0.1, 2.0, 1.8);  //tamaño: lados,altura,profundidad
+				igSolidCone(55, 55);
+			glPopMatrix();
+			glPushMatrix();
+				glColor3f(0.701, 0.125, 0.019);
+				glTranslatef(1.3, -0.05, -1.45);
+				glRotatef(45.0, 0.0, 0.0, 1.0);
+				glScalef(0.1, 2.0, 1.8);  //tamaño: lados,altura,profundidad
+				igSolidCone(55, 55);
+			glPopMatrix();
+
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para la ventana alargada.");
 }
 
 void CreaParedPuerta(void)
@@ -727,24 +978,19 @@ void CreaParedPuerta(void)
 				glPopMatrix();
 				lado = lado + 1.05;
 			}
-			/*if (i == 3) {
-				glColor3f(0.356, 0.133, 0.043);
-				glTranslatef(1.05, 3.15, -0.4);
-				glScalef(1, 1.2, 0.1);  //tamaño: lados,altura,profundidad
-				igSolidCube();
-			}*/
 			lado = 0;
 			altura = altura + 1.05;
 		}
 		// bloque puerta
 		glPushMatrix();
 		glTranslatef(1.05, 1.7, -0.10);
-		glCallList(puerta);
+		glCallList(puerta_arco);
 		glPopMatrix();
 
 		// bloque ventana superior
 		glPushMatrix();
 		glTranslatef(1.05, 5.9, -0.10);
+		glScalef(1.5, 1.5, 1.0); //tamaño: lados,altura,profundidad
 		glCallList(ventana);
 		glPopMatrix();
 
@@ -758,6 +1004,87 @@ void CreaParedPuerta(void)
 		glPushMatrix();
 		glTranslatef(1.05, 9.25, -0.10);
 		glCallList(tejado_simple);
+		glPopMatrix();
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para una pared puerta.");
+}
+
+void CreaParedVentana(void)
+{
+	int i;
+	int j;
+
+	pared_ventana = glGenLists(1);
+
+	if (pared_ventana != 0)
+	{
+		glNewList(pared_ventana, GL_COMPILE);
+		float lado = 0;
+		float altura = 0;
+		// bloque inferior a ventana
+		for (i = 0; i < 26; i++) {
+			glColor3f(0.913, 0.776, 0.447);
+			for (j = 0; j < 3; j++) {
+				glPushMatrix();
+				if (i < 2 || i == 11 || i == 18 || i == 19) {
+					// las dos primeras filas sobresalen y se dibujan mas oscuras
+					glColor3f(0.854, 0.705, 0.345);
+				}
+				glScalef(1, 0.4, 0.1); //tamaño: lados,altura,profundidad
+				if (i < 2 || i == 11) {
+					glTranslatef(lado, altura, 0.0); //posición: lados,altura,profundidad
+				}
+				else if (i == 18) {
+					glTranslatef(lado, altura, 0.0); //posición: lados,altura,profundidad
+				}
+				else if (i == 19) {
+					glTranslatef(lado, altura, 0.2); //posición: lados,altura,profundidad
+				}
+				else {
+					glTranslatef(lado, altura, -0.5); //posición: lados,altura,profundidad
+				}
+				igSolidCube();
+				glPopMatrix();
+				lado = lado + 1.05;
+			}
+			/*if (i == 3) {
+				glColor3f(0.356, 0.133, 0.043);
+				glTranslatef(1.05, 3.15, -0.4);
+				glScalef(1, 1.2, 0.1);  //tamaño: lados,altura,profundidad
+				igSolidCube();
+			}*/
+			lado = 0;
+			altura = altura + 1.05;
+		}
+		// bloque ventana inferior
+		glPushMatrix();
+		glTranslatef(1.05, 1.7, -0.10);
+		glCallList(ventana);
+		glPopMatrix();
+
+		// bloque ventana inferior 2
+		glPushMatrix();
+		glTranslatef(1.05, 3.36, -0.10);
+		glCallList(ventana);
+		glPopMatrix();
+
+		// bloque ventana superior
+		glPushMatrix();
+		glTranslatef(1.05, 5.9, -0.10);
+		glCallList(ventana);
+		glPopMatrix();
+
+		// bloque ventana balcon
+		glPushMatrix();
+			glTranslatef(1.05, 9.25, -0.10);
+			glCallList(ventana_balcon);
+		glPopMatrix();
+
+		// bloque tejado
+		glPushMatrix();
+			glTranslatef(1.05, 9.25, -0.10);
+			glCallList(tejado_simple);
 		glPopMatrix();
 		glEndList();
 	}
@@ -802,12 +1129,6 @@ void CreaParedSimple(void)
 				glPopMatrix();
 				lado = lado + 1.05;
 			}
-			/*if (i == 3) {
-				glColor3f(0.356, 0.133, 0.043);
-				glTranslatef(1.05, 3.15, -0.4);
-				glScalef(1, 1.2, 0.1);  //tamaño: lados,altura,profundidad
-				igSolidCube();
-			}*/
 			lado = 0;
 			altura = altura + 1.05;
 		}
@@ -823,7 +1144,7 @@ void CreaParedSimple(void)
 			glCallList(ventana);
 		glPopMatrix();
 
-		// bloque ventana redonda
+		// bloque ventana balcon
 		glPushMatrix();
 			glTranslatef(1.05, 9.25, -0.10);
 			glCallList(ventana_balcon);
@@ -839,16 +1160,551 @@ void CreaParedSimple(void)
 	else puts("Se ha producido un error creando la display list para una pared simple.");
 }
 
+void CreaTorre(void)
+{
+	int i;
+	int j;
+
+	torre = glGenLists(1);
+
+	if (torre != 0)
+	{
+		glNewList(torre, GL_COMPILE);
+		float lado = 0;
+		float altura = 0;
+		
+		
+		// bloque tejado
+		glPushMatrix();
+			glTranslatef(1.05, 12.85, -0.20);
+			//glScalef(0.4, 0.7, 1); //tamaño: lados,altura,profundidad
+			glCallList(tejado_cono);
+		glPopMatrix();
+		// lateral
+		glPushMatrix();
+			glColor3f(0.913, 0.776, 0.447);
+			glTranslatef(-0.45, 11.76, -1.70);
+			glScalef(0.1, 2.1, 3.15); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.913, 0.776, 0.447);
+			glTranslatef(2.55, 11.76, -1.70);
+			glScalef(0.1, 2.0, 3.15); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+
+		// bloque inferior a ventana
+		for (i = 0; i < 31; i++) {
+			glColor3f(0.913, 0.776, 0.447);
+			for (j = 0; j < 3; j++) {
+				glPushMatrix();
+				if (i < 2 || i == 11 || i == 18 || i == 19 || i == 26) {
+					// las dos primeras filas sobresalen y se dibujan mas oscuras
+					glColor3f(0.854, 0.705, 0.345);
+				}
+				glScalef(1, 0.4, 0.1); //tamaño: lados,altura,profundidad
+				if (i < 2 || i == 11) {
+					glTranslatef(lado, altura, 0.0); //posición: lados,altura,profundidad
+				}
+				else if (i == 18) {
+					glTranslatef(lado, altura, 0.0); //posición: lados,altura,profundidad
+				}
+				else if (i == 19) {
+					glTranslatef(lado, altura, 0.2); //posición: lados,altura,profundidad
+				}
+				else {
+					glTranslatef(lado, altura, -0.5); //posición: lados,altura,profundidad
+				}
+				igSolidCube();
+				glPopMatrix();
+				lado = lado + 1.05;
+			}
+			lado = 0;
+			altura = altura + 1.05;
+		}
+		// bloque puerta
+		glPushMatrix();
+			glTranslatef(1.05, 1.7, -0.10);
+			glCallList(puerta);
+		glPopMatrix();
+
+		// bloque ventana pequenha alargada
+		glPushMatrix();
+			glTranslatef(1.05, 3.0, -0.10);
+			glCallList(ventana_alargada);
+		glPopMatrix();
+
+		// bloque ventana superior
+		glPushMatrix();
+			glTranslatef(1.05, 5.9, -0.10);
+			glCallList(ventana);
+		glPopMatrix();
+
+		// bloque ventanas balcones
+		float lado_ventana = -0.02;
+		for (i = 0; i < 3; i++) {
+			glPushMatrix();
+				glTranslatef(lado_ventana, 9.25, -0.10);
+				glScalef(0.5, 0.8, 1); //tamaño: lados,altura,profundidad
+				glCallList(ventana_balcon_recta);
+			glPopMatrix();
+			lado_ventana = lado_ventana + 1.07;
+		}
+		
+		// bloque ventanas alargadas
+		lado_ventana = -0.02;
+		for (i = 0; i < 3; i++) {
+			glPushMatrix();
+				glTranslatef(lado_ventana, 10.25, -0.10);
+				glScalef(0.5, 0.4, 1); //tamaño: lados,altura,profundidad
+				glCallList(ventana_alargada);
+			glPopMatrix();
+			lado_ventana = lado_ventana + 1.07;
+		}
+
+		// bloque ventanas balcon
+		lado_ventana = -0.02;
+		for (i = 0; i < 3; i++) {
+			glPushMatrix();
+				glTranslatef(lado_ventana, 11.8, -0.10);
+				glScalef(0.4, 0.7, 1); //tamaño: lados,altura,profundidad
+				glCallList(ventana_balcon);
+			glPopMatrix();
+			lado_ventana = lado_ventana + 1.07;
+		}
+
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para una torre.");
+}
+
+
+void CreaFondo(void)
+{
+	int i;
+	int j;
+
+	float lado = 0.32;
+	float altura = 0.0;
+
+	fondo = glGenLists(1);
+
+	if (fondo != 0)
+	{
+		glNewList(fondo, GL_COMPILE);
+			for (i = 0; i < 10; i++) {
+				glColor3f(0.913, 0.776, 0.447);
+				for (j = 0; j < 22; j++) {
+					glPushMatrix();
+						glScalef(1.0175, 0.409, 0.1); //tamaño: lados,altura,profundidad
+						glTranslatef(lado, altura, -5.0); //posición: lados,altura,profundidad
+						igSolidCube();
+					glPopMatrix();
+					lado = lado + 1.05;
+				}
+				lado = 0.32;
+				altura = altura + 1.05;
+			}
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para la ventana alargada.");
+}
+
+void CreaFachada(void)
+{
+	int i;
+	int j;
+
+	fachada = glGenLists(1);
+
+	if (fachada != 0)
+	{
+		glNewList(fachada, GL_COMPILE);
+		float lado = 0;
+		float altura = 0;
+		// bloque inferior a ventana
+		for (i = 0; i < 26; i++) {
+			glColor3f(0.894, 0.757, 0.428);// 0.913, 0.776, 0.447
+			for (j = 0; j < 32; j++) {
+				glPushMatrix();
+				if (i < 2 || i == 18 || i == 19 || i == 26) {
+					// las dos primeras filas sobresalen y se dibujan mas oscuras
+					glColor3f(0.854, 0.705, 0.345);
+				}
+				glScalef(0.5, 0.4, 0.1); //tamaño: lados,altura,profundidad
+				if (i < 2 || i == 11) {
+					glTranslatef(lado, altura, 0.0); //posición: lados,altura,profundidad
+				}
+				else if (i == 18) {
+					glTranslatef(lado, altura, 0.0); //posición: lados,altura,profundidad
+				}
+				else if (i == 19) {
+					glTranslatef(lado, altura, 0.2); //posición: lados,altura,profundidad
+				}
+				else {
+					glTranslatef(lado, altura, -0.5); //posición: lados,altura,profundidad
+				}
+				igSolidCube();
+				glPopMatrix();
+				lado = lado + 1.05;
+			}
+			lado = 0;
+			altura = altura + 1.05;
+		}
+		// bloque tejado
+		glPushMatrix();
+			glTranslatef(8.0, 9.25, -0.10);
+			glScalef(5.5, 1.0, 1.0); //tamaño: lados,altura,profundidad
+			glCallList(tejado_simple);
+		glPopMatrix();
+
+		// bloque puerta5
+		glPushMatrix();
+			glTranslatef(8.15, 3.0, 0.0);
+			glScalef(1.7, 1.2, 1.2);
+			glCallList(puerta);
+		glPopMatrix();
+
+		// bloque ventana redonda
+		glPushMatrix();
+			glTranslatef(2.25, 2.3, 0.0);
+			glScalef(0.5, 0.5, 1.0);
+			glCallList(ventana_redonda);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(14.25, 2.3, 0.0);
+			glScalef(0.5, 0.5, 1.0);
+			glCallList(ventana_redonda);
+		glPopMatrix();
+
+		// bloque ventana superior
+		glPushMatrix();
+			glTranslatef(2.25, 5.9, 0.0);
+			glCallList(ventana);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(14.25, 5.9, 0.0);
+			glCallList(ventana);
+		glPopMatrix();
+
+		// bloque columnas
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(5.35, 2.0, 0.3);
+			glScalef(0.2, 2.3, 0.2); //tamaño: lados,altura,profundidad
+			igSolidSphere(20, 20);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(6.35, 2.0, 0.3);
+			glScalef(0.2, 2.3, 0.2); //tamaño: lados,altura,profundidad
+			igSolidSphere(20, 20);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(9.9, 2.0, 0.3);
+			glScalef(0.2, 2.3, 0.2); //tamaño: lados,altura,profundidad
+			igSolidSphere(20, 20);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(10.9, 2.0, 0.3);
+			glScalef(0.2, 2.3, 0.2); //tamaño: lados,altura,profundidad
+			igSolidSphere(20, 20);
+		glPopMatrix();
+
+		// bloque losa superior
+		glPushMatrix();
+			glTranslatef(8.2, 4.3, 0.3);
+			glScalef(6.9, 0.40, 0.2); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+
+		// bloque losa inferior
+		glPushMatrix();
+			glTranslatef(8.2, 0.0, 0.3);
+			glScalef(6.9, 0.40, 0.2); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+
+		// bloque ventana redonda
+		glPushMatrix();
+			glTranslatef(2.25, 9.3, 0.0);
+			glScalef(0.5, 0.5, 1.0);
+			glCallList(ventana_redonda);
+		glPopMatrix();
+
+		glPushMatrix();
+			glTranslatef(14.25, 9.3, 0.0);
+			glScalef(0.5, 0.5, 1.0);
+			glCallList(ventana_redonda);
+		glPopMatrix();
+
+		// bloque inscripcion
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(8.15, 6.3, 0.0);
+			glScalef(2.5, 1.0, 0.10);
+			igSolidCube();
+		glPopMatrix();
+
+		// bloque escudo
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(8.15, 10.0, 0.00);
+			glRotatef(180, 0, 0, 1);
+			glScalef(0.55, 1.25, 0.10);
+			igSolidSemiSphere(10, 10);
+		glPopMatrix();
+
+		// bloque separador tejado
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(1.55, 10.50, 0.0);
+			glScalef(3.7, 0.40, 0.2); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(14.68, 10.50, 0.0);
+			glScalef(3.7, 0.40, 0.2); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+
+		// bloque triangulos laterales
+		glPushMatrix();
+			glColor3f(0.894, 0.757, 0.428);
+			glTranslatef(2.35, 11.70, 0.0);
+			glRotatef(225, 0, 0, 1);
+			glScalef(1.50, 1.50, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCone(20, 20);
+		glPopMatrix();
+
+		glPushMatrix();
+			glColor3f(0.894, 0.757, 0.428);
+			glTranslatef(13.90, 11.70, 0.0);
+			glRotatef(135, 0, 0, 1);
+			glScalef(1.60, 1.60, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCone(20, 20);
+		glPopMatrix();
+
+		// bloque triangulo superior
+		glPushMatrix();
+			glColor3f(0.894, 0.757, 0.428);
+			glTranslatef(8.10, 13.12, 0.3);
+			glScalef(4.75, 1.50, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCone(20, 20);
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(5.25, 13.57, 0.45);
+			glRotatef(18, 0, 0, 1);
+			glScalef(4.3, 0.25, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(10.9, 13.75, 0.35);
+			glRotatef(-18, 0, 0, 1);
+			glScalef(4.65, 0.25, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(8.1, 13.20, 0.4);
+			glScalef(8.2, 0.25, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+
+		//bloque pared superior
+		lado = 7.35;
+		altura = 27.3;
+		for (i = 0; i < 6; i++) {
+			glColor3f(0.894, 0.757, 0.428); // 0.913, 0.776, 0.447
+			for (j = 0; j < 18; j++) {
+				glPushMatrix();
+					glScalef(0.50, 0.4, 0.1); //tamaño: lados,altura,profundidad
+					glTranslatef(lado, altura, -0.50);
+					igSolidCube();
+				glPopMatrix();
+				lado = lado + 1.05;
+			}
+			lado = 7.35;
+			altura = altura + 1.05;
+		}
+
+		// ventana
+		glPushMatrix();
+			glTranslatef(8.15, 11.5, 0.10);
+			glCallList(ventana);
+		glPopMatrix();
+
+		// bloque H
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(4.5, 10.5, 0.3);
+			glScalef(0.5, 3.8, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(6.8, 10.5, 0.3);
+			glScalef(0.5, 3.8, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(9.5, 10.5, 0.3);
+			glScalef(0.5, 3.8, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(11.8, 10.5, 0.3);
+			glScalef(0.5, 3.8, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(5.65, 10.5, 0.3);
+			glScalef(1.75, 0.5, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(10.67, 10.5, 0.3);
+			glScalef(1.75, 0.5, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+
+		//bloque escudo superior
+		glPushMatrix();
+			glColor3f(0.894, 0.757, 0.428);
+			glTranslatef(8.0, 15.25, 0.3);
+			glScalef(0.74, 0.5, 0.1);  //tamaño: lados,altura,profundidad
+			igSolidSemiSphere(20, 150);
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.894, 0.757, 0.428);
+			glTranslatef(8.0, 14.5, 0.3);
+			glScalef(1.45, 1.5, 0.1); //tamaño: lados,altura,profundidad
+			igSolidCube();
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.854, 0.705, 0.345);
+			glTranslatef(8.0, 15.0, 0.3);
+			glRotatef(180, 0, 0, 1);
+			glScalef(0.55, 1.25, 0.10);
+			igSolidSemiSphere(10, 10);
+		glPopMatrix();
+
+		// bloque pinchos
+		glPushMatrix();
+			glColor3f(0.894, 0.757, 0.428);
+			glTranslatef(1.3, 10.65, 0.0);
+			glScalef(0.3, 3.45, 0.25); //tamaño: lados,altura,profundidad
+			igSolidCone(20, 20);
+		glPopMatrix();
+		glPushMatrix();
+			glColor3f(0.894, 0.757, 0.428);
+			glTranslatef(15.2, 10.65, 0.0);
+			glScalef(0.3, 3.45, 0.25); //tamaño: lados,altura,profundidad
+			igSolidCone(20, 20);
+		glPopMatrix();
+
+		// bloque pivotes
+		// tejado
+		lado = -0.4;
+		for (i = 0; i < 5; i++) {
+			glPushMatrix();
+				glTranslatef(lado, 10.90, 0.0);
+				glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+				glCallList(pivote);
+			glPopMatrix();
+			lado = lado - 3.0;
+		}
+		glPushMatrix();
+			glTranslatef(-19.50, 10.90, 0.0);
+			glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(-22.30, 10.90, 0.0);
+			glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(-25.0, 10.90, 0.0);
+			glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+
+		lado = 16.6;
+		for (i = 0; i < 5; i++) {
+			glPushMatrix();
+				glTranslatef(lado, 10.90, 0.0);
+				glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+				glCallList(pivote);
+			glPopMatrix();
+			lado = lado + 3.0;
+		}
+		glPushMatrix();
+			glTranslatef(36.0, 10.90, 0.0);
+			glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(38.7, 10.90, 0.0);
+			glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(41.20, 10.90, 0.0);
+			glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		
+
+		//puerta principal
+		glPushMatrix();
+			glTranslatef(5.3, 4.75, 0.3);
+			glScalef(1.5, 1.5, 1.5); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(6.3, 4.75, 0.3);
+			glScalef(1.5, 1.5, 1.5); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(9.9, 4.75, 0.3);
+			glScalef(1.5, 1.5, 1.5); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		glPushMatrix();
+			glTranslatef(10.9, 4.75, 0.3);
+			glScalef(1.5, 1.5, 1.5); //tamaño: lados,altura,profundidad
+			glCallList(pivote);
+		glPopMatrix();
+		
+
+
+		glEndList();
+	}
+	else puts("Se ha producido un error creando la display list para una pared simple.");
+}
+
 void CreaPersona(void)
 {
-	float alto_cuerpo = 0.50f;
-	float ancho_cuerpo = 0.3f;
-	float largo_cuerpo = 0.125f;
+	float alto_cuerpo = 1.30f;
+	float ancho_cuerpo = 0.4f;
+	float largo_cuerpo = 0.165f;
 	float alto_brazo = 0.385f;
 	float ancho_brazo = 0.125f;
 	float largo_brazo = 0.125f;
 	float radio_cabeza = 0.135f;
-	float alto_pierna = 0.55f;
+	float alto_pierna = 0.25f;
 	float ancho_pierna = 0.125f;
 	float largo_pierna = 0.125f;
 	persona = glGenLists(1);
@@ -859,7 +1715,7 @@ void CreaPersona(void)
 			//torso
 			glPushMatrix();
 			glScalef(ancho_cuerpo, alto_cuerpo, largo_cuerpo);
-			glColor3f(0.0, 0.3, 0.8);
+			glColor3f(0.0, 0.0, 0.0);
 			//glutSolidCube(1);
 			igSolidCube();
 			glPopMatrix();
@@ -882,7 +1738,7 @@ void CreaPersona(void)
 			glPopMatrix();
 
 			// dibujamos brazo izquierdo
-			glColor3f(0.0, 0.3, 0.8);
+			glColor3f(0.0, 0.0, 0.0);
 			glPushMatrix();
 			glTranslatef((ancho_cuerpo) / 2, (alto_cuerpo - alto_brazo) / 2, 0);
 			glTranslatef(0, alto_brazo / 2, 0);
@@ -900,7 +1756,7 @@ void CreaPersona(void)
 			glPopMatrix();
 
 			// dibujamos pierna derecha
-			glColor3f(0.0, 0.3, 0.8);
+			glColor3f(0.0, 0.0, 0.0);
 			glPushMatrix();
 			glTranslatef(-(ancho_cuerpo - ancho_pierna) / 2, -
 				(alto_cuerpo + alto_pierna) / 2, 0);
@@ -916,7 +1772,7 @@ void CreaPersona(void)
 			glPopMatrix();
 
 			//Dibujamos pierna izquierda
-			glColor3f(0.0, 0.3, 0.8);
+			glColor3f(0.0, 0.0, 0.0);
 			glPushMatrix();
 			glTranslatef((ancho_cuerpo - ancho_pierna) / 2, -
 				(alto_cuerpo + alto_pierna) / 2, 0);
@@ -959,56 +1815,114 @@ void CreaEscena(void)
 		glPushMatrix();
 			glScalef(3.0,3.0,3.0);
 			glPushMatrix();
-				glTranslatef(-11.55, -0.3, -6.7);
-				glScalef(0.4, 0.4, 0.4); //tamaño: lados,altura,profundidad
+				glTranslatef(-11.57, -0.3, -6.7);
+				glScalef(1.0, 1.0, 1.0); //tamaño: lados,altura,profundidad
+				glCallList(fondo);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-11.57, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_ventana);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-9.37, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(torre);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-10.47, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_ventana);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-8.27, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
 				glCallList(pared_simple);
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(-10.3, -0.3, -6.7);
-				glScalef(0.4, 0.4, 0.4); //tamaño: lados,altura,profundidad
+				glTranslatef(-8.27, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_simple);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-7.17, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_simple);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-6.07, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_puerta);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-4.97, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_simple);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(-3.87, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
 				glCallList(pared_simple);
 			glPopMatrix();
 
 			glPushMatrix();
-				glTranslatef(0.0, -0.3, -6.7);
-				glScalef(0.4, 0.4, 0.4); //tamaño: lados,altura,profundidad
+				glTranslatef(3.1, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_simple);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(4.2, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_simple);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(5.3, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
 				glCallList(pared_puerta);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(6.4, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_simple);
 			glPopMatrix();
 			
 			glPushMatrix();
-				glTranslatef(9.41, -0.3, -6.7);
-				glScalef(0.4, 0.4, 0.4); //tamaño: lados,altura,profundidad
-				glCallList(pared_simple);
+				glTranslatef(9.7, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_ventana);
 			glPopMatrix();
 			glPushMatrix();
-				glTranslatef(10.67, -0.3, -6.7);
-				glScalef(0.4, 0.4, 0.4); //tamaño: lados,altura,profundidad
-				glCallList(pared_simple);
+				glTranslatef(8.6, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(torre);
 			glPopMatrix();
 			glPushMatrix();
-				//glColor3f(0.0,1.0,1.0);
-				/*arcos();*/
-				//glCallList (arcos);
+			glTranslatef(7.5, -0.3, -6.7);
+			glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+			glCallList(pared_simple);
+			glPopMatrix();
+			glPushMatrix();
+				glTranslatef(10.8, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(pared_ventana);
+			glPopMatrix();
+
+			glPushMatrix();
+				glTranslatef(-2.865, -0.3, -6.7);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(fachada);
+			glPopMatrix();
+
+
+			glPushMatrix();
 				glColor3f(0.5, 0.5, 0.5);
-				/*suelo();*/
 				glCallList (suelo);
-				//glCallList(pasillo_simple);
-				//glTranslatef(0.0, 0.0, -8.0); // lados,altura,profundidad 
-				//glCallList(pared_simple);
-				/*persona();*/
-				//glCallList(persona);
 			glPopMatrix();
-			//glPushMatrix();
-				//glTranslatef(0.0,0.0,5.0);
-				//glColor3f(0.0,1.0,1.0);
-				/*arcos();*/
-				//glCallList (arcos);
-				//glColor3f(0.0,0.0,1.0);
-				/*suelo();*/
-				//glCallList (suelo);
-				/*persona();*/
-				//glCallList(persona);
-			//glPopMatrix();
+			glPushMatrix();
+				glTranslatef(0.0, 0.0, -5.0);
+				glScalef(0.35, 0.35, 0.35); //tamaño: lados,altura,profundidad
+				glCallList(persona);
+			glPopMatrix();
 		glPopMatrix();
 		glEndList ();
 	}
